@@ -69,7 +69,7 @@ private fun MeditationContent(modifier: Modifier, audioPlayer: AudioPlayer) {
             title = if (isMusicPlay) "Stop" else "Play"
         ) {
             if (isMusicPlay) {
-                audioPlayer.release()
+                audioPlayer.stop()
             } else {
                 audioPlayer.playSound(0)
             }
