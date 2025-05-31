@@ -62,6 +62,22 @@ fun MainScreen(
 
     val journals by viewModel.journals.collectAsState()
 
+    MainContent(
+        journals = journals,
+        toCreateJournal = toCreateJournal,
+        toDetailJournal = { journal ->
+            toDetail(journal)
+        }
+    )
+
+}
+
+@Composable
+private fun MainContent(
+    journals: List<Journal>,
+    toCreateJournal: () -> Unit,
+    toDetailJournal: (Journal) -> Unit,
+) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -84,16 +100,10 @@ fun MainScreen(
                 fontSize = 24
             )
             if (journals.isNotEmpty()) {
-                LazyColumn {
-                    items(journals.size) { index ->
-                        val journal = journals[index]
-                        ItemJournal(
-                            title = journal.title.orEmpty(),
-                            description = journal.description.orEmpty(),
-                            toDetail = { toDetail(journal) }
-                        )
-                    }
-                }
+                JournalList(
+                    journals = journals,
+                    toDetailJournal = toDetailJournal
+                )
             } else {
                 Box(
                     modifier = Modifier
@@ -114,6 +124,23 @@ fun MainScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun JournalList(
+    journals: List<Journal>,
+    toDetailJournal: (Journal) -> Unit
+) {
+    LazyColumn {
+        items(journals.size) { index ->
+            val journal = journals[index]
+            ItemJournal(
+                title = journal.title.orEmpty(),
+                description = journal.description.orEmpty(),
+                toDetail = { toDetailJournal(journal) }
+            )
         }
     }
 }
