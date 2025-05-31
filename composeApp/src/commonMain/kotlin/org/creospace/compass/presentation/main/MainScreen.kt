@@ -87,13 +87,6 @@ private fun MainContent(
                 toMeditation = toMeditation,
                 toCreateJournal = toCreateJournal
             )
-//            FloatingActionButton(
-//                onClick = toCreateJournal,
-//                containerColor = primaryLight,
-//                contentColor = Color.White
-//            ) {
-//                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-//            }
         }
     ) { innerPadding ->
         Column(
