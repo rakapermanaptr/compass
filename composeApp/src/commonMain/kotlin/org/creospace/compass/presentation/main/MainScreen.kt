@@ -44,6 +44,7 @@ import compass.composeapp.generated.resources.image_main_1
 import org.creospace.compass.data.Journal
 import org.creospace.compass.presentation.Screens
 import org.creospace.compass.presentation.components.ItemJournal
+import org.creospace.compass.presentation.components.MainFloatingActionButton
 import org.creospace.compass.presentation.components.Spacer
 import org.creospace.compass.presentation.components.TextMedium
 import org.creospace.compass.theming.primaryLight
@@ -54,9 +55,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    navController: NavController,
     viewModel: MainViewModel = koinViewModel(),
     toCreateJournal: () -> Unit,
+    toMeditation: () -> Unit,
     toDetail: (Journal) -> Unit
 ) {
 
@@ -65,6 +66,7 @@ fun MainScreen(
     MainContent(
         journals = journals,
         toCreateJournal = toCreateJournal,
+        toMeditation = toMeditation,
         toDetailJournal = { journal ->
             toDetail(journal)
         }
@@ -76,17 +78,22 @@ fun MainScreen(
 private fun MainContent(
     journals: List<Journal>,
     toCreateJournal: () -> Unit,
+    toMeditation: () -> Unit,
     toDetailJournal: (Journal) -> Unit,
 ) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = toCreateJournal,
-                containerColor = primaryLight,
-                contentColor = Color.White
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            }
+            MainFloatingActionButton(
+                toMeditation = toMeditation,
+                toCreateJournal = toCreateJournal
+            )
+//            FloatingActionButton(
+//                onClick = toCreateJournal,
+//                containerColor = primaryLight,
+//                contentColor = Color.White
+//            ) {
+//                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+//            }
         }
     ) { innerPadding ->
         Column(
