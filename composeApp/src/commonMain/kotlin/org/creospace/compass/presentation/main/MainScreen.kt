@@ -44,6 +44,7 @@ import compass.composeapp.generated.resources.image_main_1
 import org.creospace.compass.data.Journal
 import org.creospace.compass.presentation.Screens
 import org.creospace.compass.presentation.components.ItemJournal
+import org.creospace.compass.presentation.components.MainFloatingActionButton
 import org.creospace.compass.presentation.components.Spacer
 import org.creospace.compass.presentation.components.TextMedium
 import org.creospace.compass.theming.primaryLight
@@ -54,23 +55,38 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    navController: NavController,
     viewModel: MainViewModel = koinViewModel(),
     toCreateJournal: () -> Unit,
+    toMeditation: () -> Unit,
     toDetail: (Journal) -> Unit
 ) {
 
     val journals by viewModel.journals.collectAsState()
 
+    MainContent(
+        journals = journals,
+        toCreateJournal = toCreateJournal,
+        toMeditation = toMeditation,
+        toDetailJournal = { journal ->
+            toDetail(journal)
+        }
+    )
+
+}
+
+@Composable
+private fun MainContent(
+    journals: List<Journal>,
+    toCreateJournal: () -> Unit,
+    toMeditation: () -> Unit,
+    toDetailJournal: (Journal) -> Unit,
+) {
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = toCreateJournal,
-                containerColor = primaryLight,
-                contentColor = Color.White
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-            }
+            MainFloatingActionButton(
+                toMeditation = toMeditation,
+                toCreateJournal = toCreateJournal
+            )
         }
     ) { innerPadding ->
         Column(
@@ -84,16 +100,10 @@ fun MainScreen(
                 fontSize = 24
             )
             if (journals.isNotEmpty()) {
-                LazyColumn {
-                    items(journals.size) { index ->
-                        val journal = journals[index]
-                        ItemJournal(
-                            title = journal.title.orEmpty(),
-                            description = journal.description.orEmpty(),
-                            toDetail = { toDetail(journal) }
-                        )
-                    }
-                }
+                JournalList(
+                    journals = journals,
+                    toDetailJournal = toDetailJournal
+                )
             } else {
                 Box(
                     modifier = Modifier
@@ -114,6 +124,23 @@ fun MainScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun JournalList(
+    journals: List<Journal>,
+    toDetailJournal: (Journal) -> Unit
+) {
+    LazyColumn {
+        items(journals.size) { index ->
+            val journal = journals[index]
+            ItemJournal(
+                title = journal.title.orEmpty(),
+                description = journal.description.orEmpty(),
+                toDetail = { toDetailJournal(journal) }
+            )
         }
     }
 }

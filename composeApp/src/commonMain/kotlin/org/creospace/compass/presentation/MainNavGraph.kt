@@ -20,10 +20,11 @@ fun MainNavGraph(navController: NavHostController) {
     ) {
         composable(route = Screens.Main.route) {
             MainScreen(
-                navController = navController,
                 toCreateJournal = {
                     navController.navigate(Screens.CreateJournal.route)
-//                    navController.navigate(Screens.MusicScreen.route)
+                },
+                toMeditation = {
+                    navController.navigate(Screens.MusicScreen.route)
                 },
                 toDetail = {
                     navController.navigate(Screens.DetailJournal(journalId = it.id))

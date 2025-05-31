@@ -19,6 +19,14 @@ actual class AudioPlayer {
         avAudioPlayer.play()
     }
 
+    actual fun pause() {
+
+    }
+
+    actual fun stop() {
+
+    }
+
     actual fun release() {
 
     }

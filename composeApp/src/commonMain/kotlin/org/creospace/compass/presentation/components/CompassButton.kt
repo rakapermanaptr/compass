@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun CompassButton(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     title: String,
     onClick: () -> Unit,
 ) {
